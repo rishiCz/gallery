@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Search from "./search";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions)
@@ -77,3 +77,7 @@ const Navbar = async () => {
 };
 
 export default Navbar;
+function GoogleProvider(arg0: { clientId: string; clientSecret: string; }): any {
+  throw new Error("Function not implemented.");
+}
+

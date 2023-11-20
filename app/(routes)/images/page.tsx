@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "../../_components/images/image";
 import ImageSidebar from "../../_components/imageSidebar/imageSidebar";
 import prisma from "@/prisma/client";
 import { imageObjInterface } from "@/app/schemas";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 async function  Page() {
   const session = await getServerSession(authOptions)
@@ -28,3 +28,7 @@ async function  Page() {
 }
 
 export default Page;
+function GoogleProvider(arg0: { clientId: string; clientSecret: string; }): any {
+  throw new Error("Function not implemented.");
+}
+
