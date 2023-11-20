@@ -4,7 +4,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setActiveId,setIsOpen } from "@/app/_redux/features/activeImage/activeImageSlice";
 import { useRouter } from "next/navigation";
-import { handleDeleteImage } from "./delteFromCloudinary";
 import { imageObjInterface } from "@/app/schemas";
 
 function Image({ image, role }: { image: imageObjInterface; role: String }) {
@@ -22,7 +21,6 @@ function Image({ image, role }: { image: imageObjInterface; role: String }) {
     }).finally(()=>{
       router.refresh()
     })
-    handleDeleteImage(image.cid)
   }
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 import { setUpdate } from "@/app/_redux/features/activeImage/activeImageSlice";
 import { RootState } from "@/app/_redux/store";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ManageLabels = () => {
@@ -63,8 +63,8 @@ const ManageLabels = () => {
           </div>
           <label className="mx-5">Click on labels to delete</label> 
           <div className="flex gap-5 flex-wrap p-5">
-            {allLabels.map((labelObj) => (
-              <>
+            {allLabels.map((labelObj,index) => (
+              < Fragment key = {index}>
                 <button
                   className={`btn btn-outline btn-error text-lg`}
                   onClick={() => {
@@ -73,7 +73,7 @@ const ManageLabels = () => {
                 >
                   {labelObj.label}
                 </button>
-              </>
+              </Fragment>
             ))}
           </div>
         </div>

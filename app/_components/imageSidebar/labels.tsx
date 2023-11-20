@@ -38,10 +38,10 @@ function Labels({ image }: { image: imageObjInterface }) {
   };
   return (
     <div className="flex flex-wrap mt-1 gap-1">
-      {filteredLabels.map((labelObj) => {
+      {filteredLabels.map((labelObj,index) => {
         return (
           labelObj && (
-            <div className="badge  gap-2 ">
+            <div className="badge  gap-2 " key={index}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

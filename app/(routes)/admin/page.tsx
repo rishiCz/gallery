@@ -35,8 +35,8 @@ async function Page() {
           </div>
 
           <div className="flex flex-wrap flex-grow-[1] flex-shrink-[1] gap-5 p-5">
-            {images.map((image) => (
-              <Image image={image} role="admin"></Image>
+            {images.map((image,index) => (
+              <Image image={image} role="admin" key={index}></Image>
             ))}
             <div className=" w-[10rem]"></div>
             <div className=" w-[10rem]"></div>

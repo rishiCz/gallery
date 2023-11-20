@@ -15,8 +15,8 @@ async function  Page() {
   return (
     <div className="flex">
       <div className="flex basis-[65%] flex-wrap flex-grow-[1] flex-shrink-[1] gap-5 p-5">
-        {(await prisma.image.findMany() as imageObjInterface[]).map((image) => (
-          <Image image={image} role="user"></Image>
+        {(await prisma.image.findMany() as imageObjInterface[]).map((image,index) => (
+          <Image image={image} role="user" key={index}></Image>
         ))}
         <div className="h-full w-[10rem]"></div>
         <div className="h-full w-[10rem]"></div>
