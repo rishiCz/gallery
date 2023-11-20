@@ -62,6 +62,7 @@ function ImageSidebar() {
         <div className=" bg-black">
           <img
             className=" w-full max-h-96 object-contain m-auto"
+            alt="loading..."
             src={imageObj.imageLink}
           ></img>
         </div>

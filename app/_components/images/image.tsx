@@ -50,6 +50,7 @@ function Image({ image, role }: { image: imageObjInterface; role: String }) {
       )}
       <img
         className="h-full w-full rounded-md object-cover"
+        alt="loading..."
         src={image.imageLink}
       />
     </div>
