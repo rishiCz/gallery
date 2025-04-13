@@ -49,7 +49,7 @@ const AddLabel = ({ imageObj }: { imageObj: imageObjInterface }) => {
       </button>
       {isInputOpen && (
         <div className="h-fit w-fit flex flex-wrap mt-3 gap-3">
-          {allLabels.map((labelObj,index) => (
+          {allLabels.filter(label=> !imageObj.label.includes(label.id)).map((labelObj,index) => (
             <button
               className="btn btn-outline"
               key={index}
