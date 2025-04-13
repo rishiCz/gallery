@@ -1,29 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { RootState } from "@/app/_redux/store";
-import { useDispatch, useSelector} from "react-redux";
+"use client"
 import { useRouter } from "next/navigation";
 import { imageObjInterface, labelObjInterface } from "@/app/schemas";
-import { setUpdate } from "@/app/_redux/features/activeImage/activeImageSlice";
+import { Labels } from "@prisma/client";
 
-function Labels({ image }: { image: imageObjInterface }) {
-  const imageReduxState = useSelector((state: RootState) => state.activeImage);
+function LabelsList({ image, labels }: { image: imageObjInterface, labels:Labels[] }) {
   const labelIDs = image.label
-  const dispatch = useDispatch()
+  
   const router = useRouter();
-  const [allLabels, setAllLabels] = useState([{ label: "", id: "" }])
-  const [filteredLabels, setFilteredLabel] = useState([{ label: "", id: "" }])
-  useEffect(() => {
-    fetch("api/labels").then((body: any) =>
-      body.json().then((labels:labelObjInterface[]) => {
-        setAllLabels(labels)
-      })
-    );
-  }, [imageReduxState.isActive]);
-  useEffect(()=>{
-    const filter = labelIDs.map(
-      (labelId:string) => allLabels.filter((labelobj) => labelobj.id == labelId)[0])
-    setFilteredLabel( filter )  
-  },[labelIDs,allLabels])
+  const filteredLabels = labels.filter(lab => image.label.includes(lab.id))
  
   const removelabel = (plabel: string) => {
     const newLabels = labelIDs.filter((item) => item !== plabel);
@@ -32,7 +16,6 @@ function Labels({ image }: { image: imageObjInterface }) {
       method: "PATCH",
       body: JSON.stringify({ label: newLabels, ...restImageData }),
     }).finally(() => {
-        dispatch(setUpdate())
         router.refresh();
       });
   };
@@ -67,4 +50,4 @@ function Labels({ image }: { image: imageObjInterface }) {
   );
 }
 
-export default Labels;
+export default LabelsList;

@@ -1,11 +1,19 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 function Search() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const search = searchParams.get('search');
-  const router = useRouter()
+  const [value, setValue] = useState(searchParams.get('q') || '');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+
+    const params = new URLSearchParams(searchParams as any);
+    params.set('search', e.target.value);
+    router.push(`?${params.toString()}`);
+  };
 
 
   return (
@@ -14,8 +22,8 @@ function Search() {
         type="text"
         placeholder="Search labels"
         className="input input-bordered w-24 md:w-auto"
-        defaultValue={search || ''}
-        onChange={(e)=>router.push(`?search=${e.target.value}`)}
+        value={value}
+        onChange={handleChange}
       />
     </div>
   );

@@ -1,10 +1,11 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { delteImage } from "./label/controller";
 
 export async function DELETE(
   request: NextRequest,
   { params: { id } }: { params: { id: string } }) {
-  const image = await prisma.image.delete({ where: { id: id } });
+  const image = await delteImage(id)
   return NextResponse.json({ image });
 }
 

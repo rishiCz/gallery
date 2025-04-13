@@ -1,27 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { imageObjInterface } from "@/app/schemas";
-import { useDispatch, useSelector } from "react-redux";
-import { setUpdate } from "@/app/_redux/features/activeImage/activeImageSlice";
-import { RootState } from "@/app/_redux/store";
+import { Labels } from "@prisma/client";
 
-const AddLabel = ({ imageObj }: { imageObj: imageObjInterface }) => {
-  const imageReduxState = useSelector((state: RootState) => state.activeImage);
-  const dispatch = useDispatch()
+const AddLabel = ({ imageObj, labels }: { imageObj: imageObjInterface, labels:Labels[] }) => {
   const router = useRouter();
-  const [allLabels, setAllLabels] = useState([{ label: "", id: "" }]);
-  useEffect(() => {
-    fetch("api/labels")
-      .then((body: any) =>
-        body.json().then((labels: any) => {
-          setAllLabels(labels);
-        })
-      )
-      .finally(() => {
-        router.refresh();
-      });
-  }, [imageReduxState.isActive]);
+
   const [isInputOpen, setInputOpen] = useState(false);
   const addlabel = (labelId: string) => {
     const { id, label, ...restImage } = imageObj;
@@ -33,7 +18,7 @@ const AddLabel = ({ imageObj }: { imageObj: imageObjInterface }) => {
       method: "PATCH",
       body: JSON.stringify(body),
     }).finally(() => {
-      dispatch(setUpdate())
+      router.refresh()
     });
   };
 
@@ -49,7 +34,7 @@ const AddLabel = ({ imageObj }: { imageObj: imageObjInterface }) => {
       </button>
       {isInputOpen && (
         <div className="h-fit w-fit flex flex-wrap mt-3 gap-3">
-          {allLabels.filter(label=> !imageObj.label.includes(label.id)).map((labelObj,index) => (
+          {labels.filter(label=> !imageObj.label.includes(label.id)).map((labelObj,index) => (
             <button
               className="btn btn-outline"
               key={index}

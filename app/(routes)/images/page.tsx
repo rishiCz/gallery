@@ -10,6 +10,7 @@ export type Labels =
 async function Page({ searchParams }: any) {
   const search = searchParams.search?.toLowerCase() || '';
 
+
   const images = await prisma.image.findMany() as imageObjInterface[];
   const labels = await prisma.labels.findMany() as Labels;
 
@@ -20,18 +21,18 @@ async function Page({ searchParams }: any) {
   const filteredLabelIds = new Set(filteredLabels.map(l => l.id));
 
   const filteredImages = images.filter(image =>
-    image.label.some(labelId => filteredLabelIds.has(labelId) )|| search == ""
+    image.label.some(labelId => filteredLabelIds.has(labelId)) || search == ""
   );
-  
+
   return (
     <div className="flex">
       <div className="flex basis-[65%] flex-wrap flex-grow-[1] flex-shrink-[1] gap-5 p-5">
         {filteredImages.map((image, index) => (
-          <Image isLast={index == filteredImages.length-1} image={image} labels={labels} role="user" key={index}></Image>
+          <Image isLast={index == filteredImages.length - 1} image={image} labels={labels} role="user" key={index}></Image>
         ))}
 
       </div>
-      <ImageSidebar />
+      <ImageSidebar searchParams={searchParams} images={images} labels={labels} />
     </div>
   );
 }

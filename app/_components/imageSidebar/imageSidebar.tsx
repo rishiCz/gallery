@@ -1,50 +1,21 @@
-"use client";
-
-import { RootState } from "@/app/_redux/store";
-import { useSelector, useDispatch } from "react-redux";
-import { setIsOpen } from "@/app/_redux/features/activeImage/activeImageSlice";
-import Labels from "./labels";
+import LabelsList from "./labelsList";
 import AddLabel from "./addLabel";
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import MergeQueryLink from "../mergeQuery";
 
-function ImageSidebar() {
-  const imageReduxState = useSelector((state: RootState) => state.activeImage);
-  const [isOpen, setIsSideOpen] = useState(imageReduxState.isSidebarOpen);
-  const dispatch = useDispatch();
-  const [imageObj, setImageObj] = useState({
-    imageLink: "",
-    label: [""],
-    id: "",
-    cid: "",
-  });
-  useEffect(() => {
-    setIsSideOpen(imageReduxState.isSidebarOpen);
-  }, [imageReduxState.isSidebarOpen]);
-
-  useEffect(() => {
-    console.log("ran")
-    fetch(`api/images/${imageReduxState.imageID}`).then((result) => {
-      result.json().then((body) => {
-        if(body.image)
-        setImageObj(body.image);
-      });
-    });
-  }, [imageReduxState.imageID,imageReduxState.isActive]);
-  
-  const closeSidebar = () => {
-    dispatch(setIsOpen(false));
-  };
+function ImageSidebar({searchParams,images,labels}:any) {  
+  const img = searchParams.img?.toLowerCase() || '';
+  const imageObj = images.find((image:any)=> image.id == img)
   const sideBarStyle = {
-    flexBasis: `${isOpen ? 35 : 0}%`,
+    flexBasis: `${imageObj ? 35 : 0}%`,
   };
   return (
-    <div style={sideBarStyle}>
-      <div
-        style={{ display: `${isOpen ? "unset" : "none"}` }}
-        className={` fixed right-0 bg-gray-700 rounded-md  w-[35%] h-full `}
+    <div style={sideBarStyle} className="transition-all duration-300 ease-in-out">
+      {<div
+        style={{ width: `${imageObj ? "35%" : "0px"}` }}
+        className={` fixed transition-all ease-in-out duration-300  right-0 bg-gray-700 rounded-md  w-[35%] h-full `}
       >
-        <button className="btn btn-circle  btn-xs m-2" onClick={closeSidebar}>
+        <MergeQueryLink newParams={{img:""}} className="btn btn-circle  btn-xs m-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
@@ -59,21 +30,21 @@ function ImageSidebar() {
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
+        </MergeQueryLink>
         <div className=" bg-black relative w-full h-72">
-          <Image
+         { imageObj &&<Image
             className=" w-full max-h-96 object-contain m-auto"
             alt="loading..."
             fill
             src={imageObj.imageLink}
-          />
+          />}
         </div>
-        <div className="m-4">
+        {imageObj && <div className="m-4">
           <h4>Tags</h4>
-          <Labels image={imageObj} />
-          <AddLabel imageObj={imageObj} />
-        </div>
-      </div>
+          <LabelsList image={imageObj} labels={labels} />
+          <AddLabel imageObj={imageObj} labels={labels} />
+        </div>}
+      </div>}
     </div>
   );
 }

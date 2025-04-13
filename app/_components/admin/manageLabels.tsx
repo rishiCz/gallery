@@ -18,7 +18,6 @@ const ManageLabels = () => {
         setAllLabels(labels);
       })
     );
-    console.log("infinite")
   },[updateLabel]);
 
   const removelabel = (labelID: String) => {
