@@ -25,13 +25,11 @@ async function Page({ searchParams }: any) {
   
   return (
     <div className="flex">
-      <div className="flex basis-[65%] flex-wrap flex-grow-[1] flex-shrink-[1] gap-5 p-5">
+      <div className="flex  flex-wrap flex-grow-[1] flex-shrink-[1] gap-5 p-5">
         {filteredImages.map((image, index) => (
-          <Image image={image} labels={labels} role="user" key={index}></Image>
+          <Image isLast={index == filteredImages.length-1} image={image} labels={labels} role="user" key={index}></Image>
         ))}
-        <div className="h-full w-[10rem]"></div>
-        <div className="h-full w-[10rem]"></div>
-        <div className="h-full w-[10rem]"></div>
+
       </div>
       <ImageSidebar />
     </div>

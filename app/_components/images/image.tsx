@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { imageObjInterface } from "@/app/schemas";
 import { Labels } from '@prisma/client';
 
-function Image({ image,labels, role }: { image: imageObjInterface; role: String,labels?:Labels[] }) {
+function Image({ image,labels, role,isLast }: { image: imageObjInterface; role: String,labels?:Labels[],isLast?:boolean }) {
   const dispatch = useDispatch();
   const router = useRouter()
   const imageClick = (image: imageObjInterface) => {
@@ -26,7 +26,7 @@ function Image({ image,labels, role }: { image: imageObjInterface; role: String,
 
   return (
     <div
-      className=" group h-64 max-w-[600px] overflow-hidden flex-[auto] shrink-[1] grow--[1] rounded-md relative duration-200 ease-in-out transition-all bg-gray-800 hover:cursor-pointer hover:scale-[1.01]"
+      className={`group h-64 ${isLast?'max-w-fit':'max-w-[600px]'} overflow-hidden flex-[auto] shrink-[1] grow--[1] rounded-md relative duration-200 ease-in-out transition-all bg-gray-800 hover:cursor-pointer hover:scale-[1.01]`}
       onClick={() => {
         imageClick(image);
       }}
@@ -55,11 +55,11 @@ function Image({ image,labels, role }: { image: imageObjInterface; role: String,
         map((lab)=><div key={lab.id}>{lab.label}</div>)}
       </div>
       <Images
-        className="h-full w-full rounded-md object-cover"
+        className={`h-full ${isLast?'w-fit':'w-full'} rounded-md object-cover`}
         alt={"Loading"}
         src={image.imageLink}
         width={500}
-        height={256}
+        height={500}
       />
     </div>
   );
