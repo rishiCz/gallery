@@ -5,26 +5,23 @@ import ImageSidebar from "../../_components/imageSidebar/imageSidebar";
 import prisma from "@/prisma/client";
 import ManageLabels from "@/app/_components/admin/manageLabels";
 import UploadImage from "@/app/_components/admin/uploadImage";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { Labels } from "../images/page";
 
-async function Page() {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user?.email !== "galleryace123@gmail.com") {
-    return (
-      <>
-        <div className=" m-auto flex flex-col items-center justify-center">
-          <h1 className=" text-5xl">Sign in with ADMIN account to access</h1>
-          <div className=" flex flex-col align-middle mt-20">
-            <h2 className=" text-3xl"> ADMIN account credentials</h2>
-            <label className="mt-5 text-2xl">UserName : galleryace123@gmail.com</label>
-            <label className="text-2xl">Password : gallery@123</label>
-          </div>
-        </div>
-      </>
-    );
-  }
-  const images = (await prisma.image.findMany()) as imageObjInterface[];
+async function Page({searchParams}:any) {
+  const search = searchParams.search?.toLowerCase() || '';
+
+  const images = await prisma.image.findMany() as imageObjInterface[];
+  const labels = await prisma.labels.findMany() as Labels;
+
+  const filteredLabels = labels.filter(({ label }) =>
+    label.toLowerCase().includes(search)
+  );
+
+  const filteredLabelIds = new Set(filteredLabels.map(l => l.id));
+
+  const filteredImages = images.filter(image =>
+    image.label.some(labelId => filteredLabelIds.has(labelId) )|| search == ""
+  );
   return (
     <>
       <div className="flex">
@@ -35,8 +32,8 @@ async function Page() {
           </div>
 
           <div className="flex flex-wrap flex-grow-[1] flex-shrink-[1] gap-5 p-5">
-            {images.map((image,index) => (
-              <Image image={image} role="admin" key={index}></Image>
+            {filteredImages.map((image,index) => (
+              <Image image={image} labels={labels} role="admin" key={index}></Image>
             ))}
             <div className=" w-[10rem]"></div>
             <div className=" w-[10rem]"></div>
@@ -50,7 +47,4 @@ async function Page() {
 }
 
 export default Page;
-function GoogleProvider(arg0: { clientId: string; clientSecret: string; }): any {
-  throw new Error("Function not implemented.");
-}
 

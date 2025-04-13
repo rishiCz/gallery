@@ -10,6 +10,8 @@ const ManageLabels = () => {
   const [allLabels, setAllLabels] = useState([{ label: "", id: "" }]);
   const [showLabels, setShowLabels] = useState(false);
   const [input, setInput] = useState("");
+  const [updateLabel, setUpdateLabel] = useState(true)
+
   useEffect(() => {
     fetch("api/labels").then((body: any) =>
       body.json().then((labels: any) => {
@@ -17,22 +19,27 @@ const ManageLabels = () => {
       })
     );
     console.log("infinite")
-  },[imageReduxState.isActive]);
+  },[updateLabel]);
+
   const removelabel = (labelID: String) => {
     fetch(`api/labels/${labelID}`, {
       method: "DELETE",
     }).finally(() => {
       dispatch(setUpdate())
+      setUpdateLabel(prev=>!prev)
     });
   };
+
   const addLabel = () => {
     setInput("")
     const data = { label: input };
     const jsonData = JSON.stringify(data);
     fetch("api/labels", { method: "POST", body: jsonData }).finally(() => {
       dispatch(setUpdate())
+      setUpdateLabel(prev=>!prev)
     });
   };
+  
   return (
     <>
       <button
@@ -46,8 +53,8 @@ const ManageLabels = () => {
         {showLabels ? "CLOSE X" : "Manage labels"}
       </button>
       {showLabels && (
-        <div className="bg-gray-900 m-5 p-2 rounded-lg">
-          <div className="flex mx-5 mb-3">
+        <div className="bg-gray-900 m-5 p-5 rounded-lg">
+          <div className="flex mb-3">
             <input
               type="text"
               placeholder="Type here"
@@ -61,8 +68,8 @@ const ManageLabels = () => {
               Add label
             </button>
           </div>
-          <label className="mx-5">Click on labels to delete</label> 
-          <div className="flex gap-5 flex-wrap p-5">
+          <label className="">Click on labels to delete</label> 
+          <div className="flex gap-5 flex-wrap mt-3">
             {allLabels.map((labelObj,index) => (
               < Fragment key = {index}>
                 <button

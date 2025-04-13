@@ -37,16 +37,16 @@ function Labels({ image }: { image: imageObjInterface }) {
       });
   };
   return (
-    <div className="flex flex-wrap mt-1 gap-1">
+    <div className="flex flex-wrap mt-1 gap-3">
       {filteredLabels.map((labelObj,index) => {
         return (
           labelObj && (
-            <div className="badge  gap-2 " key={index}>
+            <div className="badge  gap-2 p-4" key={index}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                className="inline-block w-4 h-4 stroke-current hover:cursor-pointer"
+                className="inline-block -ms-2 w-4 h-4 stroke-current hover:cursor-pointer"
                 onClick={() => {
                   removelabel(labelObj.id);
                 }}

@@ -1,12 +1,13 @@
 "use client";
-
+import Images from 'next/image';
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setActiveId,setIsOpen } from "@/app/_redux/features/activeImage/activeImageSlice";
 import { useRouter } from "next/navigation";
 import { imageObjInterface } from "@/app/schemas";
+import { Labels } from '@prisma/client';
 
-function Image({ image, role }: { image: imageObjInterface; role: String }) {
+function Image({ image,labels, role }: { image: imageObjInterface; role: String,labels?:Labels[] }) {
   const dispatch = useDispatch();
   const router = useRouter()
   const imageClick = (image: imageObjInterface) => {
@@ -25,7 +26,7 @@ function Image({ image, role }: { image: imageObjInterface; role: String }) {
 
   return (
     <div
-      className=" h-64 flex-[auto] shrink-[1] grow--[1] rounded-md relative duration-200 ease-in-out transition-all bg-gray-800 hover:cursor-pointer hover:scale-[1.01]"
+      className=" group h-64 max-w-[600px] overflow-hidden flex-[auto] shrink-[1] grow--[1] rounded-md relative duration-200 ease-in-out transition-all bg-gray-800 hover:cursor-pointer hover:scale-[1.01]"
       onClick={() => {
         imageClick(image);
       }}
@@ -48,10 +49,17 @@ function Image({ image, role }: { image: imageObjInterface; role: String }) {
           </svg>
         </button>
       )}
-      <img
+      <div className="group-hover:h-[30%] max-w-full opacity-0 group-hover:opacity-100 pt-8 text-white gap-2 p-2 group-ho h-0 rounded-md flex bg-gradient-to-t transition-all from-black to-transparent w-full absolute bottom-0">
+        {labels && labels.
+        filter(lab => image.label.includes(lab.id)).
+        map((lab)=><div key={lab.id}>{lab.label}</div>)}
+      </div>
+      <Images
         className="h-full w-full rounded-md object-cover"
-        alt="loading..."
+        alt={"Loading"}
         src={image.imageLink}
+        width={500}
+        height={256}
       />
     </div>
   );

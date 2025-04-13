@@ -6,6 +6,7 @@ import { setIsOpen } from "@/app/_redux/features/activeImage/activeImageSlice";
 import Labels from "./labels";
 import AddLabel from "./addLabel";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 function ImageSidebar() {
   const imageReduxState = useSelector((state: RootState) => state.activeImage);
@@ -59,12 +60,13 @@ function ImageSidebar() {
             />
           </svg>
         </button>
-        <div className=" bg-black">
-          <img
+        <div className=" bg-black relative w-full h-72">
+          <Image
             className=" w-full max-h-96 object-contain m-auto"
             alt="loading..."
+            fill
             src={imageObj.imageLink}
-          ></img>
+          />
         </div>
         <div className="m-4">
           <h4>Tags</h4>
