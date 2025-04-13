@@ -4,8 +4,6 @@ import ImageSidebar from "../../_components/imageSidebar/imageSidebar";
 import prisma from "@/prisma/client";
 import { imageObjInterface } from "@/app/schemas";
 
-
-export const dynamic = 'force-static'; 
 export type Labels =
   { id: string, label: string }[]
 
