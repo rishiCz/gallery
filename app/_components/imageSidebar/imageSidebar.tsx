@@ -1,10 +1,13 @@
+'use client'
 import LabelsList from "./labelsList";
 import AddLabel from "./addLabel";
 import Image from "next/image";
 import MergeQueryLink from "../mergeQuery";
+import { useSearchParams } from "next/navigation";
 
-function ImageSidebar({searchParams,images,labels}:any) {  
-  const img = searchParams.img?.toLowerCase() || '';
+function ImageSidebar({images,labels}:any) {
+  const searchParams = useSearchParams()  
+  const img = searchParams.get('img')?.toLowerCase() || '';
   const imageObj = images.find((image:any)=> image.id == img)
   const sideBarStyle = {
     flexBasis: `${imageObj ? 35 : 0}%`,

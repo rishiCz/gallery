@@ -1,7 +1,7 @@
 // app/components/MergeQueryLink.tsx
 'use client';
 
-import { useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 type MergeQueryLinkProps = {
@@ -15,6 +15,7 @@ export default function MergeQueryLink({ newParams, children,className }: MergeQ
   const pathname = usePathname();
 
   const mergedParams = new URLSearchParams(searchParams as any);
+  const router = useRouter()
 
   // Merge or override existing params
   Object.entries(newParams).forEach(([key, value]) => {
@@ -22,6 +23,10 @@ export default function MergeQueryLink({ newParams, children,className }: MergeQ
   });
 
   const href = `${pathname}?${mergedParams.toString()}`;
+  const navigate = ()=>{
+    router.push(href)
 
-  return <Link className={className} href={href}>{children}</Link>;
+  }
+  
+  return <div className={className} onClick={navigate}>{children}</div>;
 }

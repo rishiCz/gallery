@@ -32,7 +32,7 @@ async function Page({ searchParams }: any) {
         ))}
 
       </div>
-      <ImageSidebar searchParams={searchParams} images={images} labels={labels} />
+      <ImageSidebar images={images} labels={labels} />
     </div>
   );
 }
